@@ -4,6 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>OFAC SDN Risk & Concentration Dashboard</title>
+
 <style>
     body {
         margin: 0;
@@ -31,11 +32,6 @@
 
     .menu-btn:hover {
         opacity: 0.7;
-    }
-
-    .header h1 {
-        font-size: 20px;
-        margin: 0;
     }
 
     .top-right {
@@ -71,14 +67,16 @@
         border: none;
         box-shadow: none;
     }
+
     .menu-item {
         padding: 12px 16px;
         cursor: pointer;
         white-space: nowrap;
         transition: background 0.3s, transform 0.2s;
     }
+
     .menu-item:hover {
-        background: #eef5ff;
+        background: #E8F9FF;
         transform: translateX(4px);
     }
 
@@ -88,7 +86,9 @@
         overflow-y: auto;
         display: flex;
         flex-direction: column;
+        position: relative;
     }
+
     .card {
         background: white;
         padding: 20px;
@@ -96,121 +96,142 @@
         box-shadow: 0 4px 15px rgba(0,0,0,0.12);
         max-width: 100%;
         transition: background 0.3s;
-        flex: 1;
+        min-height: 80vh;
     }
+
     .card:hover {
         background: #E8F9FF;
     }
+
     .card img {
         width: 100%;
         max-height: 85vh;
         object-fit: contain;
         border-radius: 10px;
     }
+
     .footer {
         position: sticky;
         bottom: 0;
         text-align: center;
-        padding: 10px 0;
+        padding: 10px 0 15px 0;
         font-size: 14px;
         color: #555;
         background: #f4f6f8;
-        margin-top: 20px;
+        margin-top: auto;
     }
 </style>
 </head>
 <body>
 
+<!-- HEADER -->
 <div class="header">
     <button class="menu-btn" onclick="toggleSidebar()">☰</button>
-    <h1>OFAC SDN Sanctions Dashboard</h1>
+    <h1>OFAC SDN Risk & Concentration Dashboard</h1>
 
     <div class="top-right">
         <button class="btn" onclick="downloadExcel()">Download Excel</button>
     </div>
 </div>
 
+<!-- LAYOUT -->
 <div class="container">
+    
+    <!-- SIDEBAR -->
     <div class="sidebar" id="sidebar">
         <div class="menu-item" onclick="loadAbout()">About The Dashboard</div>
         <div class="menu-item" onclick="loadImage('screenshot_Excel_OFAC_KPI_KRI.png')">OFAC KPI/KRI</div>
         <div class="menu-item" onclick="loadImage('Screenshot_Excel_OFAC_SDN_risk_logic.png')">OFAC SDN Risk Logic</div>
     </div>
 
+    <!-- CONTENT -->
     <div class="content">
-        <div class="card" id="display-card">
-            <!-- About text will be loaded here by default -->
-        </div>
+        <div class="card" id="display-card"></div>
+
         <footer class="footer">© 2025 Atsu Vovor — All Rights Reserved</footer>
     </div>
 </div>
 
 <script>
+/* ---------------- ABOUT CONTENT ------------------- */
 const aboutContent = `
 <div>
 This Use case provides an overview of the OFAC Sanctions List Service Risk & Concentration Dashboard, detailing its creation, underlying technology, analytical methodology, and key risk indicators derived from the data.<br><br>
-Dashboard Name: OFAC SDN Global Risk Monitor: Compliance Analytics Dashboard<br>
+
+<b>Dashboard Name:</b> OFAC SDN Global Risk Monitor: Compliance Analytics Dashboard<br><br>
+
 The OFAC SDN Global Risk Monitor is an interactive data analytics dashboard designed to help compliance, risk, and financial institutions quickly assess geographical concentration risk and entity type exposure (Individual vs. Non-Individual) using data from the U.S. Treasury's Office of Foreign Assets Control (OFAC) Specially Designated Nationals and Blocked Persons List (SDN List).<br><br>
-Technology Stack and Creation Methodology<br>
-The dashboard leverages the advanced analytical capabilities of the Microsoft Excel ecosystem to handle large, structured compliance datasets.<br><br>
-Component | Technology Used | Function<br>
-Data Ingestion & Transformation | Power Query (Get & Transform) | Used to load and clean the raw CSV files, merge the sdn (entity) and add (address) tables on the common key (ent_num), and ensure data quality before loading to the model.<br>
-Data Modeling & Calculation Engine | Power Pivot & DAX | Power Pivot established the necessary one-to-many relationship between the sdn and add tables. DAX (Data Analysis Expressions) was used to create complex measures like Distinct Count and Bi-directional Filtering (CROSSFILTER) required for accurate cross-table analysis.<br>
-Reporting & Visualization | Excel PivotTables | Used to create the dynamic, interactive report structure, allowing users to slice data by Country and view the calculated risk metrics.<br><br>
-Data Sources:<br>
-1. SDN Data: OFAC Specially Designated Nationals and Blocked Persons List (SDN List).<br>
-2. ADD Data: OFAC Address Information File (Linked addresses).<br><br>
-Risk Calculation and Color Logic<br>
-The dashboard employs a tiered, quantitative approach to assess sanctions concentration risk, using the Total Distinct Entities identified within a jurisdiction as the primary metric.<br><br>
-Risk Calculation Methodology<br>
-The Risk Rating is calculated using the Excel IFS function on the Total Distinct Entities count:<br><br>
-Total Distinct Entities (SDNs) | Risk Rating<br>
-$> 1000$ | Critical risk rating<br>
-$> 800$ to $\leq 1000$ | High risk rating<br>
-$> 600$ to $\leq 800$ | Medium High risk rating<br>
-$> 400$ to $\leq 600$ | Medium risk rating<br>
-$> 200$ to $\leq 400$ | Medium Low risk rating<br>
-$\leq 200$ | Low risk rating<br><br>
-Conditional Formatting (Color Logic)<br>
-Conditional Formatting is applied based on the calculated risk text in the 'Risk Rating' column to provide immediate visual prioritization:<br><br>
-Level | Approx. Color | Hex Code | Common Color Name<br>
-Low | #2E4A1E | Dark Olive Green<br>
-Medium Low | #9ACD32 | Yellow Green<br>
-Medium | #FFFF00 | Bright Yellow<br>
-Medium High | #FFA500 | Orange<br>
-High | #FF0000 | Red<br>
-Critical | #800080 | Purple<br><br>
-Key Performance Indicators (KPIs) and Risk Indicators (KRIs)<br>
-These metrics provide at-a-glance insight into the state of the sanctions risk landscape and are positioned at the top of the dashboard.<br><br>
-Category | Indicator | Definition and Purpose<br>
-KRI (Risk) | Critical Risk Jurisdictions | Count of countries (e.g., Mexico) currently flagged with the Critical Risk Rating. Indicates immediate compliance priority.<br>
-KRI (Risk) | Non-Individual Entity Ratio | Percentage of Non-Individual SDNs (Organizations/Vessels) vs. Total SDNs. Highlights risks driven by corporate or systemic evasion activity.<br>
-KPI (Performance) | Total Distinct Entities | Absolute count of unique sanctioned entities across all reported jurisdictions. Measures the overall volume of active sanctions exposure.<br>
-KPI (Performance) | Top SDN Concentration | The highest single count of Total Distinct Entities recorded (e.g., 1,018 for Mexico). Sets the benchmark for maximum concentration risk.
+
+<b>Technology Stack and Creation Methodology</b><br>
+The dashboard leverages Microsoft Excel with Power Query, Power Pivot, and DAX.<br><br>
+
+<b>DATA PIPELINE</b><br>
+• Power Query → Load & clean raw SDN & ADD CSV data<br>
+• Power Pivot → Data modeling & relationships<br>
+• DAX → Measures including bi-directional filtering<br>
+• PivotTables → Reporting layer<br><br>
+
+<b>RISK LOGIC</b><br>
+Risk is assigned using Total Distinct SDN Entities per jurisdiction:<br><br>
+
+>1000 → Critical (Purple)<br>
+>800 → High (Red)<br>
+>600 → Medium-High (Orange)<br>
+>400 → Medium (Yellow)<br>
+>200 → Medium-Low (Yellow-Green)<br>
+≤200 → Low (Dark Olive Green)<br><br>
+
+<b>Key Performance & Risk Indicators</b><br>
+• Critical Risk Jurisdictions<br>
+• Non-Individual SDN Ratio<br>
+• Total Distinct Entities<br>
+• Highest SDN Concentration (e.g., Mexico → 1,018)<br>
 </div>
 `;
 
+/* ---------------- IMAGE LOADER ------------------- */
 function loadImage(filename) {
     const url = "https://raw.githubusercontent.com/atsuvovor/projects_portfolio.github.io/main/" + filename;
-    const displayCard = document.getElementById("display-card");
-    displayCard.innerHTML = `<img src="${url}" />`;
+    document.getElementById("display-card").innerHTML = `<img src="${url}">`;
 }
 
+/* ---------------- ABOUT LOADER ------------------- */
 function loadAbout() {
-    const displayCard = document.getElementById("display-card");
-    displayCard.innerHTML = aboutContent;
+    document.getElementById("display-card").innerHTML = aboutContent;
 }
 
-function downloadExcel() {
-    window.location.href = "https://raw.githubusercontent.com/atsuvovor/MS_Excel_Power_Pivot_Power_Query_Projects/main/OFAC_Sanctions_Analytics.xlsx";
+/* ---------------- FIXED EXCEL DOWNLOAD ------------------- */
+async function downloadExcel() {
+    const url = "https://raw.githubusercontent.com/atsuvovor/MS_Excel_Power_Pivot_Power_Query_Projects/main/OFAC_Sanctions_Analytics.xlsx";
+
+    try {
+        const response = await fetch(url, { mode: "cors" });
+        if (!response.ok) throw new Error("Network response was not ok");
+
+        const blob = await response.blob();
+        const blobUrl = window.URL.createObjectURL(blob);
+
+        const a = document.createElement("a");
+        a.href = blobUrl;
+        a.download = "OFAC_Sanctions_Analytics.xlsx";
+        document.body.appendChild(a);
+        a.click();
+
+        window.URL.revokeObjectURL(blobUrl);
+        document.body.removeChild(a);
+
+    } catch (error) {
+        console.error("Download failed:", error);
+        alert("File download failed. Please try again.");
+    }
 }
 
+/* ---------------- SIDEBAR TOGGLE ------------------- */
 function toggleSidebar() {
-    const sidebar = document.getElementById("sidebar");
-    sidebar.classList.toggle("collapsed");
+    document.getElementById("sidebar").classList.toggle("collapsed");
 }
 
-// Load About section by default
+/* ---------------- LOAD DEFAULT ------------------- */
 window.onload = loadAbout;
 </script>
 
