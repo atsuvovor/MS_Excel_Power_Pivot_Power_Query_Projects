@@ -195,8 +195,8 @@ function loadAbout() {
 
 /* ---------------- FIXED EXCEL DOWNLOAD ------------------- */
 async function downloadExcel() {
-    const url = "https://github.com/atsuvovor/MS_Excel_Power_Pivot_Power_Query_Projects/raw/main/docs/Excel_OFAC_sanctions/OFAC_Sanctions_Analytics.xlsx";
-    //const url = "https://raw.githubusercontent.com/atsuvovor/MS_Excel_Power_Pivot_Power_Query_Projects/main/docs/Excel_OFAC_sanctions/OFAC_Sanctions_Analytics.xlsx?raw=1";
+    #const url = "https://github.com/atsuvovor/MS_Excel_Power_Pivot_Power_Query_Projects/raw/main/docs/Excel_OFAC_sanctions/OFAC_Sanctions_Analytics.xlsx";
+    const url = "https://raw.githubusercontent.com/atsuvovor/MS_Excel_Power_Pivot_Power_Query_Projects/main/docs/Excel_OFAC_sanctions/OFAC_Sanctions_Analytics.xlsx?raw=1";
 
                   
     try {
@@ -229,11 +229,13 @@ function toggleSidebar() {
 /* ---------------- LOAD DOCUMENTATION ------------------- */
 async function loadDocumentation() {
     const url = "https://raw.githubusercontent.com/atsuvovor/MS_Excel_Power_Pivot_Power_Query_Projects/main/docs/Excel_OFAC_sanctions/README.md";
+
     
      try {
         let mdText = await (await fetch(url)).text();
 
         const base = "https://raw.githubusercontent.com/atsuvovor/MS_Excel_Power_Pivot_Power_Query_Projects/main/docs/Excel_OFAC_sanctions/";
+         
 
         // Fix Markdown images: ![](images/foo.png)
         mdText = mdText.replace(/!\[(.*?)\]\((images\/.*?)\)/g, (m, alt, rel) => {
@@ -276,5 +278,6 @@ window.onload = loadAbout;
 
 </body>
 </html>
+
 
 
