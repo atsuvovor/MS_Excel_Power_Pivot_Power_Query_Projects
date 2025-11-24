@@ -235,14 +235,14 @@ function toggleSidebar() {
 /* ---------------- LOAD DEFAULT ------------------- */
 window.onload = loadAbout;
 
-/* ---------------- LOAD DEFAULT ------------------- */
+/* ---------------- LOAD DOCUMENT ------------------- */
 async function loadDocumentation() {
-    const url = "https://raw.githubusercontent.com/atsuvovor/power_bi_projects/main/docs/cyber_attack_insight/README.md";
+    const url = "https://raw.githubusercontent.com/atsuvovor/MS_Excel_Power_Pivot_Power_Query_Projects/main/docs/Excel_OFAC_sanctions/README.md";
     let mdText = await (await fetch(url)).text();
 
     // Base URL for relative image paths
-    const base = "https://raw.githubusercontent.com/atsuvovor/power_bi_projects/main/docs/cyber_attack_insight/";
-
+    const base = "https://raw.githubusercontent.com/atsuvovor/MS_Excel_Power_Pivot_Power_Query_Projects/main/docs/Excel_OFAC_sanctions/";
+    
     // Convert Markdown image syntax ![alt](images/...) → absolute URLs
     mdText = mdText.replace(/!\[(.*?)\]\((images\/.*?)\)/g, (match, alt, relPath) =>
             ![${alt}](${base}${relPath.replace(/^\.\//, "")})`
@@ -278,4 +278,5 @@ async function loadDocumentation() {
 
     </body>
 </html>
+
 
