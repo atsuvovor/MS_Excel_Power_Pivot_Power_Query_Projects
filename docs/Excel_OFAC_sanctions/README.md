@@ -89,10 +89,13 @@ This analytics product supports:
 [OFAC SDN List](https://home.treasury.gov/policy-issues/financial-sanctions/specially-designated-nationals-list-data-formats) | [Specially Designated Nationals List](https://sanctionslist.ofac.treas.gov/Home/SdnList)  
 
 ---
+##  🤝 Connect With Me
+I am always open to collaboration and discussion about new projects or technical roles.
 
-## © Copyright
+Atsu Vovor  
+Consultant, Data & Analytics   
+Ph: 416-795-8246 | ✉️ atsu.vovor@bell.net  
+🔗 [LinkedIn ](https://www.linkedin.com/in/atsu-vovor-mmai-9188326/)|   [GitHub](https://atsuvovor.github.io/projects_portfolio.github.io/) |   [Tableau Portfolio](https://public.tableau.com/app/profile/atsu.vovor8645/vizzes)  
+📍 Mississauga ON   
 
-© **2025 Atsu Vovor — All Rights Reserved**
-
-
-
+### Thank you for visiting!🙏
