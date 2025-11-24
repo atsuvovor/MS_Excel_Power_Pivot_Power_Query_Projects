@@ -86,8 +86,7 @@ This analytics product supports:
 ## 🌎 Data Source
 
 **U.S. Department of the Treasury — OFAC SDN List**  
-[OFAC SDN List](https://home.treasury.gov/policy-issues/financial-sanctions/specially-designated-nationals-list-data-formats)  
-[Specially Designated Nationals List](https://sanctionslist.ofac.treas.gov/Home/SdnList)  
+[OFAC SDN List](https://home.treasury.gov/policy-issues/financial-sanctions/specially-designated-nationals-list-data-formats) | [Specially Designated Nationals List](https://sanctionslist.ofac.treas.gov/Home/SdnList)  
 
 ---
 
