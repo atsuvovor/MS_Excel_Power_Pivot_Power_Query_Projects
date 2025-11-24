@@ -7,8 +7,8 @@
   <img src="images/Excel_OFAC_sanction_screenshot3.png" alt="Vulnerability Scorecard" width="800" height="400">
 </p
 
-🔗 **Live Dashboard:**  
-<a href="https://atsuvovor.github.io/MS_Excel_Power_Pivot_Power_Query_Projects/ofac_sdn_sanctions_dashboard.html" target="_blank" rel="noopener noreferrer">https://atsuvovor.github.io/MS_Excel_Power_Pivot_Power_Query_Projects/ofac_sdn_sanctions_dashboard.html</a>
+🔗 **Live Dashboard:**
+<a href="https://atsuvovor.github.io/MS_Excel_Power_Pivot_Power_Query_Projects/ofac_sdn_sanctions_dashboard.html" target="_blank">https://atsuvovor.github.io/MS_Excel_Power_Pivot_Power_Query_Projects/ofac_sdn_sanctions_dashboard.html</a>
 
 ---
 
