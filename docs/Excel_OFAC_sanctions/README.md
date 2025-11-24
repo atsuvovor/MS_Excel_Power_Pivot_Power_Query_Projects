@@ -1,7 +1,12 @@
 
-# 📘 OFAC SDN Risk & Concentration Dashboard
+<h1 align="center">OFAC SDN Risk & Concentration Dashboard</h1>
+<p align="center">
+  <i>Global Sanctions Analytics for Compliance, AML, and Enterprise Risk</i>
+</p>
+<p align="center">
+  <img src="images/Excel_OFAC_sanction_screenshot3.png" alt="Vulnerability Scorecard" width="800" height="400">
+</p
 
-### *Global Sanctions Analytics for Compliance, AML, and Enterprise Risk*
 
 This dashboard provides a structured, Excel-based analytics solution for monitoring global sanctions exposure using the U.S. Treasury’s **OFAC Specially Designated Nationals (SDN)** list. It enables compliance, AML, and risk teams to quickly assess:
 
