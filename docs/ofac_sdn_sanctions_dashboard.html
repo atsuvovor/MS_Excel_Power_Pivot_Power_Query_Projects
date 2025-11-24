@@ -227,44 +227,35 @@ async function downloadExcel() {
 
 /* ---------------- LOAD DOCUMENTATION ------------------- */
 async function loadDocumentation() {
-    const url =
-      "https://raw.githubusercontent.com/atsuvovor/MS_Excel_Power_Pivot_Power_Query_Projects/main/docs/Excel_OFAC_sanctions/README.md";
+    const url = "https://raw.githubusercontent.com/atsuvovor/MS_Excel_Power_Pivot_Power_Query_Projects/refs/heads/main/docs/Excel_OFAC_sanctions/README.md";
 
     try {
         let mdText = await (await fetch(url)).text();
 
-        const base =
-          "https://raw.githubusercontent.com/atsuvovor/MS_Excel_Power_Pivot_Power_Query_Projects/main/docs/Excel_OFAC_sanctions/";
+        const base = "https://raw.githubusercontent.com/atsuvovor/MS_Excel_Power_Pivot_Power_Query_Projects/refs/heads/main/docs/Excel_OFAC_sanctions/";
 
-        // Fix Markdown images
         mdText = mdText.replace(/!\[(.*?)\]\((images\/.*?)\)/g, (m, alt, rel) => {
             return `![${alt}](${base}${rel})`;
         });
 
-        // Fix HTML <img> tags
         mdText = mdText.replace(
             /<img\s+([^>]*?)src=["']([^"']+)["']([^>]*)>/gi,
             (match, pre, src, post) => {
                 if (src.startsWith("http")) return match;
-
                 const newPath = base + src;
-
                 post = post.replace(/width=["']\d+["']/gi, "")
                            .replace(/height=["']\d+["']/gi, "");
-
                 if (!/style=/i.test(post)) {
                     post += ' style="max-width:100%;height:auto;"';
                 }
-
                 return `<img ${pre}src="${newPath}"${post}>`;
             }
         );
 
-        // Convert Markdown → HTML
         const html = marked.parse(mdText);
 
         document.getElementById("display-card").innerHTML = `
-            <div style="padding: 10px; max-width: 1000px; margin: auto;">
+            <div style="padding:10px; max-width:1000px; margin:auto;">
                 ${html}
             </div>
         `;
@@ -276,12 +267,14 @@ async function loadDocumentation() {
 }
 
 
+
 /* ---------------- LOAD ABOUT BY DEFAULT ------------------- */
 window.onload = loadAbout;
 </script>
 
 </body>
 </html>
+
 
 
 
