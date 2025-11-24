@@ -130,6 +130,7 @@
     <h1>OFAC SDN Risk & Concentration Dashboard</h1>
 
     <div class="top-right">
+        <button class="btn" onclick="loadDocumentation()">Documentation</button>
         <button class="btn" onclick="downloadExcel()">Download Excel</button>
     </div>
 </div>
@@ -233,7 +234,48 @@ function toggleSidebar() {
 
 /* ---------------- LOAD DEFAULT ------------------- */
 window.onload = loadAbout;
-</script>
 
-</body>
+/* ---------------- LOAD DEFAULT ------------------- */
+async function loadDocumentation() {
+    const url = "https://raw.githubusercontent.com/atsuvovor/power_bi_projects/main/docs/cyber_attack_insight/README.md";
+    let mdText = await (await fetch(url)).text();
+
+    // Base URL for relative image paths
+    const base = "https://raw.githubusercontent.com/atsuvovor/power_bi_projects/main/docs/cyber_attack_insight/";
+
+    // Convert Markdown image syntax ![alt](images/...) → absolute URLs
+    mdText = mdText.replace(/!\[(.*?)\]\((images\/.*?)\)/g, (match, alt, relPath) =>
+            ![${alt}](${base}${relPath.replace(/^\.\//, "")})`
+    );
+
+    // Convert <img> tags in HTML (like <p><img ...></p>) to absolute URLs + responsive
+    mdText = mdText.replace(/<img\s+([^>]*?)src=["']([^"']+)["']([^>]*)>/gi, (match, pre, path, post) => {
+        if (path.startsWith("http")) return match; // already absolute
+            const newPath = base + path.replace(/^\.\//, "");
+        // Remove fixed width/height attributes
+        post = post.replace(/width=["']\d+["']/gi, '');
+        post = post.replace(/height=["']\d+["']/gi, '');
+
+        if (path.includes("vulnerability_scorecard_3D.png")) {
+            post += ' style="max-width:100%; height:800px; object-fit:contain;"';
+        } else if (!/style=/i.test(post)) {
+            post += ' style="max-width:100%; height:auto;"';
+        }
+        return `<img ${pre}src="${newPath}"${post}>`;
+    });
+
+    // Convert Markdown to HTML
+    const html = marked.parse(mdText);
+
+    // Display in the card
+    document.getElementById("display-card").innerHTML = `
+        <div style="padding: 10px; max-width: 1000px; margin: auto;">
+            ${html}
+        </div>
+     `;
+     }
+    </script>
+
+    </body>
 </html>
+
