@@ -193,14 +193,19 @@ function loadAbout() {
     document.getElementById("display-card").innerHTML = aboutContent;
 }
 
+
+/* ---------------- SIDEBAR TOGGLE ------------------- */
+function toggleSidebar() {
+    document.getElementById("sidebar").classList.toggle("collapsed");
+}
+
 /* ---------------- FIXED EXCEL DOWNLOAD ------------------- */
 async function downloadExcel() {
-    #const url = "https://github.com/atsuvovor/MS_Excel_Power_Pivot_Power_Query_Projects/raw/main/docs/Excel_OFAC_sanctions/OFAC_Sanctions_Analytics.xlsx";
-    const url = "https://raw.githubusercontent.com/atsuvovor/MS_Excel_Power_Pivot_Power_Query_Projects/main/docs/Excel_OFAC_sanctions/OFAC_Sanctions_Analytics.xlsx?raw=1";
+    const url =
+      "https://raw.githubusercontent.com/atsuvovor/MS_Excel_Power_Pivot_Power_Query_Projects/main/docs/Excel_OFAC_sanctions/OFAC_Sanctions_Analytics.xlsx";
 
-                  
     try {
-        const response = await fetch(url, { mode: "cors" });
+        const response = await fetch(url);
         if (!response.ok) throw new Error("Network response was not ok");
 
         const blob = await response.blob();
@@ -214,46 +219,43 @@ async function downloadExcel() {
 
         window.URL.revokeObjectURL(blobUrl);
         document.body.removeChild(a);
-
     } catch (error) {
         console.error("Download failed:", error);
         alert("File download failed. Please try again.");
     }
 }
 
-/* ---------------- SIDEBAR TOGGLE ------------------- */
-function toggleSidebar() {
-    document.getElementById("sidebar").classList.toggle("collapsed");
-}
-
 /* ---------------- LOAD DOCUMENTATION ------------------- */
 async function loadDocumentation() {
-    const url = "https://raw.githubusercontent.com/atsuvovor/MS_Excel_Power_Pivot_Power_Query_Projects/main/docs/Excel_OFAC_sanctions/README.md";
+    const url =
+      "https://raw.githubusercontent.com/atsuvovor/MS_Excel_Power_Pivot_Power_Query_Projects/main/docs/Excel_OFAC_sanctions/README.md";
 
-    
-     try {
+    try {
         let mdText = await (await fetch(url)).text();
 
-        const base = "https://raw.githubusercontent.com/atsuvovor/MS_Excel_Power_Pivot_Power_Query_Projects/main/docs/Excel_OFAC_sanctions/";
-         
+        const base =
+          "https://raw.githubusercontent.com/atsuvovor/MS_Excel_Power_Pivot_Power_Query_Projects/main/docs/Excel_OFAC_sanctions/";
 
-        // Fix Markdown images: ![](images/foo.png)
+        // Fix Markdown images
         mdText = mdText.replace(/!\[(.*?)\]\((images\/.*?)\)/g, (m, alt, rel) => {
-            return `![${alt}](${base}${rel.replace(/^\.\//, "")})`;
+            return `![${alt}](${base}${rel})`;
         });
 
         // Fix HTML <img> tags
-        mdText = mdText.replace(/<img\s+([^>]*?)src=["']([^"']+)["']([^>]*)>/gi,
+        mdText = mdText.replace(
+            /<img\s+([^>]*?)src=["']([^"']+)["']([^>]*)>/gi,
             (match, pre, src, post) => {
                 if (src.startsWith("http")) return match;
-                const newPath = base + src.replace(/^\.\//, "");
 
-                post = post.replace(/width=["']\d+["']/gi, '')
-                           .replace(/height=["']\d+["']/gi, '');
+                const newPath = base + src;
+
+                post = post.replace(/width=["']\d+["']/gi, "")
+                           .replace(/height=["']\d+["']/gi, "");
 
                 if (!/style=/i.test(post)) {
                     post += ' style="max-width:100%;height:auto;"';
                 }
+
                 return `<img ${pre}src="${newPath}"${post}>`;
             }
         );
@@ -266,11 +268,13 @@ async function loadDocumentation() {
                 ${html}
             </div>
         `;
-         } catch (err) {
-            alert("Documentation could not be loaded. Ensure README.md exists.");
-            console.error(err);
-        }
+
+    } catch (err) {
+        alert("Documentation could not be loaded. Ensure README.md exists.");
+        console.error(err);
+    }
 }
+
 
 /* ---------------- LOAD ABOUT BY DEFAULT ------------------- */
 window.onload = loadAbout;
@@ -278,6 +282,7 @@ window.onload = loadAbout;
 
 </body>
 </html>
+
 
 
 
