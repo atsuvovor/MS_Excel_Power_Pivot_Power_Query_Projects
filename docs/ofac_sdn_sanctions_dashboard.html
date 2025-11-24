@@ -195,8 +195,8 @@ function loadAbout() {
 
 /* ---------------- FIXED EXCEL DOWNLOAD ------------------- */
 async function downloadExcel() {
-    const url = "https://raw.githubusercontent.com/atsuvovor/MS_Excel_Power_Pivot_Power_Query_Projects/main/OFAC_Sanctions_Analytics.xlsx";
-
+    const url = "https://raw.githubusercontent.com/atsuvovor/MS_Excel_Power_Pivot_Power_Query_Projects/main/docs/Excel_OFAC_sanctions/OFAC_Sanctions_Analytics.xlsx";
+                  
     try {
         const response = await fetch(url, { mode: "cors" });
         if (!response.ok) throw new Error("Network response was not ok");
@@ -268,3 +268,4 @@ window.onload = loadAbout;
 
 </body>
 </html>
+
