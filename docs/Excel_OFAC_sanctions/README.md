@@ -7,6 +7,10 @@
   <img src="images/Excel_OFAC_sanction_screenshot3.png" alt="Vulnerability Scorecard" width="800" height="400">
 </p
 
+🔗 **Live Dashboard:**
+[https://atsuvovor.github.io/power_bi_projects/cyber_attack_insight_dashboard.html](https://atsuvovor.github.io/power_bi_projects/cyber_attack_insight_dashboard.html)  
+
+---
 
 This dashboard provides a structured, Excel-based analytics solution for monitoring global sanctions exposure using the U.S. Treasury’s **OFAC Specially Designated Nationals (SDN)** list. It enables compliance, AML, and risk teams to quickly assess:
 
