@@ -9,6 +9,8 @@
 
 🔗 **Live Dashboard:**
 [https://atsuvovor.github.io/MS_Excel_Power_Pivot_Power_Query_Projects/ofac_sdn_sanctions_dashboard.html](https://atsuvovor.github.io/MS_Excel_Power_Pivot_Power_Query_Projects/ofac_sdn_sanctions_dashboard.html)  
+---
+<a href="https://atsuvovor.github.io/MS_Excel_Power_Pivot_Power_Query_Projects/ofac_sdn_sanctions_dashboard.html" target="_blank" rel="noopener noreferrer">https://atsuvovor.github.io/MS_Excel_Power_Pivot_Power_Query_Projects/ofac_sdn_sanctions_dashboard.html</a>
 
 ---
 
