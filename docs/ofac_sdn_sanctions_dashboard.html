@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>OFAC SDN Risk & Concentration Dashboard</title>
+
+<style>
+    body {
+        margin: 0;
+        font-family: Arial, sans-serif;
+        background: #f4f6f8;
+    }
+
+    .header {
+        display: flex;
+        align-items: center;
+        padding: 12px 18px;
+        background: #3b82f6;
+        color: white;
+    }
+
+    .menu-btn {
+        background: transparent;
+        border: none;
+        color: white;
+        font-size: 24px;
+        cursor: pointer;
+        margin-right: 15px;
+        padding: 4px;
+    }
+
+    .menu-btn:hover {
+        opacity: 0.7;
+    }
+
+    .top-right {
+        margin-left: auto;
+    }
+
+    .btn {
+        background: white;
+        color: black;
+        padding: 8px 14px;
+        border-radius: 8px;
+        font-size: 14px;
+        cursor: pointer;
+        border: none;
+        transition: 0.3s;
+    }
+
+    .container {
+        display: flex;
+        height: calc(100vh - 60px);
+    }
+
+    .sidebar {
+        width: 220px;
+        background: #ffffff;
+        border-right: 1px solid #d1d9e6;
+        box-shadow: 2px 0 6px rgba(0,0,0,0.08);
+        transition: width 0.3s;
+        overflow: hidden;
+    }
+    .sidebar.collapsed {
+        width: 0px;
+        border: none;
+        box-shadow: none;
+    }
+
+    .menu-item {
+        padding: 12px 16px;
+        cursor: pointer;
+        white-space: nowrap;
+        transition: background 0.3s, transform 0.2s;
+    }
+
+    .menu-item:hover {
+        background: #E8F9FF;
+        transform: translateX(4px);
+    }
+
+    .content {
+        flex: 1;
+        padding: 15px;
+        overflow-y: auto;
+        display: flex;
+        flex-direction: column;
+        position: relative;
+    }
+
+    .card {
+        background: white;
+        padding: 20px;
+        border-radius: 14px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.12);
+        max-width: 100%;
+        transition: background 0.3s;
+        min-height: 80vh;
+    }
+
+    .card:hover {
+        background: #E8F9FF;
+    }
+
+    .card img {
+        width: 100%;
+        max-height: 85vh;
+        object-fit: contain;
+        border-radius: 10px;
+    }
+
+    .footer {
+        position: sticky;
+        bottom: 0;
+        text-align: center;
+        padding: 10px 0 15px 0;
+        font-size: 14px;
+        color: #555;
+        background: #f4f6f8;
+        margin-top: auto;
+    }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+    <button class="menu-btn" onclick="toggleSidebar()">☰</button>
+    <h1>OFAC SDN Risk & Concentration Dashboard</h1>
+
+    <div class="top-right">
+        <button class="btn" onclick="downloadExcel()">Download Excel</button>
+    </div>
+</div>
+
+<!-- LAYOUT -->
+<div class="container">
+    
+    <!-- SIDEBAR -->
+    <div class="sidebar" id="sidebar">
+        <div class="menu-item" onclick="loadAbout()">About The Dashboard</div>
+        <div class="menu-item" onclick="loadImage('screenshot_Excel_OFAC_KPI_KRI.png')">OFAC KPI/KRI</div>
+        <div class="menu-item" onclick="loadImage('Screenshot_Excel_OFAC_SDN_risk_logic.png')">OFAC SDN Risk Logic</div>
+    </div>
+
+    <!-- CONTENT -->
+    <div class="content">
+        <div class="card" id="display-card"></div>
+
+        <footer class="footer">© 2025 Atsu Vovor — All Rights Reserved</footer>
+    </div>
+</div>
+
+<script>
+/* ---------------- ABOUT CONTENT ------------------- */
+const aboutContent = `
+<div>
+This Use case provides an overview of the OFAC Sanctions List Service Risk & Concentration Dashboard, detailing its creation, underlying technology, analytical methodology, and key risk indicators derived from the data.<br><br>
+
+<b>Dashboard Name:</b> OFAC SDN Global Risk Monitor: Compliance Analytics Dashboard<br><br>
+
+The OFAC SDN Global Risk Monitor is an interactive data analytics dashboard designed to help compliance, risk, and financial institutions quickly assess geographical concentration risk and entity type exposure (Individual vs. Non-Individual) using data from the U.S. Treasury's Office of Foreign Assets Control (OFAC) Specially Designated Nationals and Blocked Persons List (SDN List).<br><br>
+
+<b>Technology Stack and Creation Methodology</b><br>
+The dashboard leverages Microsoft Excel with Power Query, Power Pivot, and DAX.<br><br>
+
+<b>DATA PIPELINE</b><br>
+• Power Query → Load & clean raw SDN & ADD CSV data<br>
+• Power Pivot → Data modeling & relationships<br>
+• DAX → Measures including bi-directional filtering<br>
+• PivotTables → Reporting layer<br><br>
+
+<b>RISK LOGIC</b><br>
+Risk is assigned using Total Distinct SDN Entities per jurisdiction:<br><br>
+
+>1000 → Critical (Purple)<br>
+>800 → High (Red)<br>
+>600 → Medium-High (Orange)<br>
+>400 → Medium (Yellow)<br>
+>200 → Medium-Low (Yellow-Green)<br>
+≤200 → Low (Dark Olive Green)<br><br>
+
+<b>Key Performance & Risk Indicators</b><br>
+• Critical Risk Jurisdictions<br>
+• Non-Individual SDN Ratio<br>
+• Total Distinct Entities<br>
+• Highest SDN Concentration (e.g., Mexico → 1,018)<br>
+</div>
+`;
+
+/* ---------------- IMAGE LOADER ------------------- */
+function loadImage(filename) {
+    const url = "https://raw.githubusercontent.com/atsuvovor/projects_portfolio.github.io/main/" + filename;
+    document.getElementById("display-card").innerHTML = `<img src="${url}">`;
+}
+
+/* ---------------- ABOUT LOADER ------------------- */
+function loadAbout() {
+    document.getElementById("display-card").innerHTML = aboutContent;
+}
+
+/* ---------------- FIXED EXCEL DOWNLOAD ------------------- */
+async function downloadExcel() {
+    const url = "https://raw.githubusercontent.com/atsuvovor/MS_Excel_Power_Pivot_Power_Query_Projects/main/OFAC_Sanctions_Analytics.xlsx";
+
+    try {
+        const response = await fetch(url, { mode: "cors" });
+        if (!response.ok) throw new Error("Network response was not ok");
+
+        const blob = await response.blob();
+        const blobUrl = window.URL.createObjectURL(blob);
+
+        const a = document.createElement("a");
+        a.href = blobUrl;
+        a.download = "OFAC_Sanctions_Analytics.xlsx";
+        document.body.appendChild(a);
+        a.click();
+
+        window.URL.revokeObjectURL(blobUrl);
+        document.body.removeChild(a);
+
+    } catch (error) {
+        console.error("Download failed:", error);
+        alert("File download failed. Please try again.");
+    }
+}
+
+/* ---------------- SIDEBAR TOGGLE ------------------- */
+function toggleSidebar() {
+    document.getElementById("sidebar").classList.toggle("collapsed");
+}
+
+/* ---------------- LOAD DEFAULT ------------------- */
+window.onload = loadAbout;
+</script>
+
+</body>
+</html>
