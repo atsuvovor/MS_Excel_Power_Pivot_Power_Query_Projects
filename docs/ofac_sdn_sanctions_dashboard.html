@@ -195,7 +195,9 @@ function loadAbout() {
 
 /* ---------------- FIXED EXCEL DOWNLOAD ------------------- */
 async function downloadExcel() {
-    const url = "https://raw.githubusercontent.com/atsuvovor/MS_Excel_Power_Pivot_Power_Query_Projects/main/docs/Excel_OFAC_sanctions/OFAC_Sanctions_Analytics.xlsx";
+    const url = "https://github.com/atsuvovor/MS_Excel_Power_Pivot_Power_Query_Projects/raw/main/docs/Excel_OFAC_sanctions/OFAC_Sanctions_Analytics.xlsx";
+    //const url = "https://raw.githubusercontent.com/atsuvovor/MS_Excel_Power_Pivot_Power_Query_Projects/main/docs/Excel_OFAC_sanctions/OFAC_Sanctions_Analytics.xlsx?raw=1";
+
                   
     try {
         const response = await fetch(url, { mode: "cors" });
@@ -227,39 +229,45 @@ function toggleSidebar() {
 /* ---------------- LOAD DOCUMENTATION ------------------- */
 async function loadDocumentation() {
     const url = "https://raw.githubusercontent.com/atsuvovor/MS_Excel_Power_Pivot_Power_Query_Projects/main/docs/Excel_OFAC_sanctions/README.md";
-    let mdText = await (await fetch(url)).text();
+    
+     try {
+        let mdText = await (await fetch(url)).text();
 
-    const base = "https://raw.githubusercontent.com/atsuvovor/MS_Excel_Power_Pivot_Power_Query_Projects/main/docs/Excel_OFAC_sanctions/";
+        const base = "https://raw.githubusercontent.com/atsuvovor/MS_Excel_Power_Pivot_Power_Query_Projects/main/docs/Excel_OFAC_sanctions/";
 
-    // Fix Markdown images: ![](images/foo.png)
-    mdText = mdText.replace(/!\[(.*?)\]\((images\/.*?)\)/g, (m, alt, rel) => {
-        return `![${alt}](${base}${rel.replace(/^\.\//, "")})`;
-    });
+        // Fix Markdown images: ![](images/foo.png)
+        mdText = mdText.replace(/!\[(.*?)\]\((images\/.*?)\)/g, (m, alt, rel) => {
+            return `![${alt}](${base}${rel.replace(/^\.\//, "")})`;
+        });
 
-    // Fix HTML <img> tags
-    mdText = mdText.replace(/<img\s+([^>]*?)src=["']([^"']+)["']([^>]*)>/gi,
-        (match, pre, src, post) => {
-            if (src.startsWith("http")) return match;
-            const newPath = base + src.replace(/^\.\//, "");
+        // Fix HTML <img> tags
+        mdText = mdText.replace(/<img\s+([^>]*?)src=["']([^"']+)["']([^>]*)>/gi,
+            (match, pre, src, post) => {
+                if (src.startsWith("http")) return match;
+                const newPath = base + src.replace(/^\.\//, "");
 
-            post = post.replace(/width=["']\d+["']/gi, '')
-                       .replace(/height=["']\d+["']/gi, '');
+                post = post.replace(/width=["']\d+["']/gi, '')
+                           .replace(/height=["']\d+["']/gi, '');
 
-            if (!/style=/i.test(post)) {
-                post += ' style="max-width:100%;height:auto;"';
+                if (!/style=/i.test(post)) {
+                    post += ' style="max-width:100%;height:auto;"';
+                }
+                return `<img ${pre}src="${newPath}"${post}>`;
             }
-            return `<img ${pre}src="${newPath}"${post}>`;
+        );
+
+        // Convert Markdown → HTML
+        const html = marked.parse(mdText);
+
+        document.getElementById("display-card").innerHTML = `
+            <div style="padding: 10px; max-width: 1000px; margin: auto;">
+                ${html}
+            </div>
+        `;
+         } catch (err) {
+            alert("Documentation could not be loaded. Ensure README.md exists.");
+            console.error(err);
         }
-    );
-
-    // Convert Markdown → HTML
-    const html = marked.parse(mdText);
-
-    document.getElementById("display-card").innerHTML = `
-        <div style="padding: 10px; max-width: 1000px; margin: auto;">
-            ${html}
-        </div>
-    `;
 }
 
 /* ---------------- LOAD ABOUT BY DEFAULT ------------------- */
@@ -268,4 +276,5 @@ window.onload = loadAbout;
 
 </body>
 </html>
+
 
