@@ -157,36 +157,28 @@
 /* ---------------- ABOUT CONTENT ------------------- */
 const aboutContent = `
 <div>
-This Use case provides an overview of the OFAC Sanctions List Service Risk & Concentration Dashboard, detailing its creation, underlying technology, analytical methodology, and key risk indicators derived from the data.<br><br>
+This Use case provides an overview of the OFAC Sanctions List Service Risk & Concentration Dashboard, detailing its creation, underlying technology, analytical methodology, and key risk indicators.<br><br>
 
 <b>Dashboard Name:</b> OFAC SDN Global Risk Monitor: Compliance Analytics Dashboard<br><br>
 
-The OFAC SDN Global Risk Monitor is an interactive data analytics dashboard designed to help compliance, risk, and financial institutions quickly assess geographical concentration risk and entity type exposure (Individual vs. Non-Individual) using data from the U.S. Treasury's Office of Foreign Assets Control (OFAC) Specially Designated Nationals and Blocked Persons List (SDN List).<br><br>
+The dashboard helps compliance and risk teams assess geographical concentration risk and entity-type exposure using the OFAC SDN List.<br><br>
 
-<b>Technology Stack and Creation Methodology</b><br>
-The dashboard leverages Microsoft Excel with Power Query, Power Pivot, and DAX.<br><br>
+<b>Technology Stack</b><br>
+Excel • Power Query • Power Pivot • DAX<br><br>
 
-<b>DATA PIPELINE</b><br>
-• Power Query → Load & clean raw SDN & ADD CSV data<br>
-• Power Pivot → Data modeling & relationships<br>
-• DAX → Measures including bi-directional filtering<br>
-• PivotTables → Reporting layer<br><br>
-
-<b>RISK LOGIC</b><br>
-Risk is assigned using Total Distinct SDN Entities per jurisdiction:<br><br>
-
+<b>Risk Logic</b><br>
 >1000 → Critical (Purple)<br>
 >800 → High (Red)<br>
 >600 → Medium-High (Orange)<br>
 >400 → Medium (Yellow)<br>
 >200 → Medium-Low (Yellow-Green)<br>
-≤200 → Low (Dark Olive Green)<br><br>
+≤200 → Low (Olive)<br><br>
 
-<b>Key Performance & Risk Indicators</b><br>
+<b>KPIs / KRIs</b><br>
 • Critical Risk Jurisdictions<br>
 • Non-Individual SDN Ratio<br>
 • Total Distinct Entities<br>
-• Highest SDN Concentration (e.g., Mexico → 1,018)<br>
+• Highest SDN Concentration<br>
 </div>
 `;
 
@@ -232,51 +224,47 @@ function toggleSidebar() {
     document.getElementById("sidebar").classList.toggle("collapsed");
 }
 
-/* ---------------- LOAD DEFAULT ------------------- */
-window.onload = loadAbout;
-
-/* ---------------- LOAD DOCUMENT ------------------- */
+/* ---------------- LOAD DOCUMENTATION ------------------- */
 async function loadDocumentation() {
     const url = "https://raw.githubusercontent.com/atsuvovor/MS_Excel_Power_Pivot_Power_Query_Projects/main/docs/Excel_OFAC_sanctions/README.md";
     let mdText = await (await fetch(url)).text();
 
-    // Base URL for relative image paths
     const base = "https://raw.githubusercontent.com/atsuvovor/MS_Excel_Power_Pivot_Power_Query_Projects/main/docs/Excel_OFAC_sanctions/";
-    
-    // Convert Markdown image syntax ![alt](images/...) → absolute URLs
-    mdText = mdText.replace(/!\[(.*?)\]\((images\/.*?)\)/g, (match, alt, relPath) =>
-            ![${alt}](${base}${relPath.replace(/^\.\//, "")})`
-    );
 
-    // Convert <img> tags in HTML (like <p><img ...></p>) to absolute URLs + responsive
-    mdText = mdText.replace(/<img\s+([^>]*?)src=["']([^"']+)["']([^>]*)>/gi, (match, pre, path, post) => {
-        if (path.startsWith("http")) return match; // already absolute
-            const newPath = base + path.replace(/^\.\//, "");
-        // Remove fixed width/height attributes
-        post = post.replace(/width=["']\d+["']/gi, '');
-        post = post.replace(/height=["']\d+["']/gi, '');
-
-        if (path.includes("vulnerability_scorecard_3D.png")) {
-            post += ' style="max-width:100%; height:800px; object-fit:contain;"';
-        } else if (!/style=/i.test(post)) {
-            post += ' style="max-width:100%; height:auto;"';
-        }
-        return `<img ${pre}src="${newPath}"${post}>`;
+    // Fix Markdown images: ![](images/foo.png)
+    mdText = mdText.replace(/!\[(.*?)\]\((images\/.*?)\)/g, (m, alt, rel) => {
+        return `![${alt}](${base}${rel.replace(/^\.\//, "")})`;
     });
 
-    // Convert Markdown to HTML
+    // Fix HTML <img> tags
+    mdText = mdText.replace(/<img\s+([^>]*?)src=["']([^"']+)["']([^>]*)>/gi,
+        (match, pre, src, post) => {
+            if (src.startsWith("http")) return match;
+            const newPath = base + src.replace(/^\.\//, "");
+
+            post = post.replace(/width=["']\d+["']/gi, '')
+                       .replace(/height=["']\d+["']/gi, '');
+
+            if (!/style=/i.test(post)) {
+                post += ' style="max-width:100%;height:auto;"';
+            }
+            return `<img ${pre}src="${newPath}"${post}>`;
+        }
+    );
+
+    // Convert Markdown → HTML
     const html = marked.parse(mdText);
 
-    // Display in the card
     document.getElementById("display-card").innerHTML = `
         <div style="padding: 10px; max-width: 1000px; margin: auto;">
             ${html}
         </div>
-     `;
-     }
-    </script>
+    `;
+}
 
-    </body>
+/* ---------------- LOAD ABOUT BY DEFAULT ------------------- */
+window.onload = loadAbout;
+</script>
+
+</body>
 </html>
-
-
