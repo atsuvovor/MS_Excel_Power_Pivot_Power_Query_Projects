@@ -136,7 +136,7 @@
     
     <!-- SIDEBAR -->
     <div class="sidebar" id="sidebar">
-        <div class="menu-item" onclick="loadAbout()">About The Dashboard</div>
+        <div class="menu-item" onclick="loadAbout()">Data Story</div>
         <div class="menu-item" onclick="loadImage('screenshot_Excel_OFAC_KPI_KRI.png')">OFAC KPI/KRI</div>
         <div class="menu-item" onclick="loadImage('Screenshot_Excel_OFAC_SDN_risk_logic.png')">OFAC SDN Risk Logic</div>
     </div>
@@ -150,31 +150,39 @@
 </div>
  <footer class="footer">© 2025 Atsu Vovor — All Rights Reserved</footer>
 <script>
-/* ---------------- ABOUT CONTENT ------------------- */
-const aboutContent = `
+/* ---------------- DATA STORY ------------------- */
+const data_story = `
 <div>
-This Use case provides an overview of the OFAC Sanctions List Service Risk & Concentration Dashboard, detailing its creation, underlying technology, analytical methodology, and key risk indicators.<br><br>
 
-<b>Dashboard Name:</b> OFAC SDN Global Risk Monitor: Compliance Analytics Dashboard<br><br>
+<h2>Data Story: Sanctioned Entity Risk Profile</h2>
 
-The dashboard helps compliance and risk teams assess geographical concentration risk and entity-type exposure using the OFAC SDN List.<br><br>
+This analysis assesses the concentration risk of Specially Designated Nationals (SDNs) across five key countries by linking address data with entity types (Individual vs. Non-Individual) and applying a tiered risk rating based on the total number of distinct entities in each jurisdiction.<br><br>
 
-<b>Technology Stack</b><br>
-Excel • Power Query • Power Pivot • DAX<br><br>
+The central insight is the extreme concentration of high risk in a single jurisdiction, <b>Mexico</b>, while the other four countries fall into low-to-medium risk categories.<br><br>
 
-<b>Risk Logic</b><br>
->1000 → Critical (Purple)<br>
->800 → High (Red)<br>
->600 → Medium-High (Orange)<br>
->400 → Medium (Yellow)<br>
->200 → Medium-Low (Yellow-Green)<br>
-≤200 → Low (Olive)<br><br>
+There is a strong concentration of <b>Individual</b> Specially Designated Nationals. Compliance efforts and risk exposure monitoring should be heavily weighted toward Individual entities. Any transactions or relationships linked to this SDN category warrant the highest level of scrutiny.<br><br>
 
-<b>KPIs / KRIs</b><br>
-• Critical Risk Jurisdictions<br>
-• Non-Individual SDN Ratio<br>
-• Total Distinct Entities<br>
-• Highest SDN Concentration<br>
+<h3>Key Business Insights</h3>
+
+<b>1. Extreme Concentration of Critical Risk</b><br>
+Mexico is the only country assigned a <b>Critical</b> risk rating. With <b>1,018</b> distinct sanctioned entities, its count is nearly five times higher than the next highest country (North Korea, at 229).<br>
+<b>Actionable Insight:</b> Compliance efforts and monitoring should be heavily weighted toward Mexico. Any transactions or relationships linked to this jurisdiction require the highest level of scrutiny.<br><br>
+
+<b>2. Primary Risk Drivers: Individuals vs. Non-Individuals</b><br>
+While the overall risk rating is based on total count, the breakdown reveals the primary nature of the risk:<br><br>
+
+• <b>Mexico</b> has a high volume of both Individuals (573) and Non-Individuals (445), suggesting a broad systemic presence of sanctioned activity involving both personal networks and corporate/organizational fronts.<br>
+• <b>North Korea</b> risk is driven primarily by Non-Individuals (166 vs. 63 Individuals), indicating activity centered on state-run enterprises, vessels, or shell companies linked to evasion or proliferation networks.<br>
+• <b>Lebanon</b> has a balanced mix (152 Individuals vs. 173 Non-Individuals), indicating dual risk composed of personal facilitators supported by organizational infrastructure.<br><br>
+
+<b>3. Medium-Low Risk Jurisdictions</b><br>
+North Korea (229) and Lebanon (325) fall into the <b>Medium-Low</b> risk rating. Though lower than Mexico, their volumes are still significant.<br>
+<b>Insight:</b> These jurisdictions represent moderate risk profiles. Due diligence should prioritize identifying and mitigating Non-Individual entities in North Korea, and both entity types in Lebanon.<br><br>
+
+<b>4. Low Risk Jurisdictions (Lower Volume, Not Zero Risk)</b><br>
+Spain (48) and Afghanistan (82) are classified as <b>Low</b> risk.<br>
+<b>Insight:</b> Low rating is quantitative, not qualitative. Even a few dozen sanctioned entities pose meaningful exposure. Compliance checks should remain rigorous but with proportional allocation of resources.<br><br>
+
 </div>
 `;
 
@@ -186,7 +194,7 @@ function loadImage(filename) {
 
 /* ---------------- ABOUT LOADER ------------------- */
 function loadAbout() {
-    document.getElementById("display-card").innerHTML = aboutContent;
+    document.getElementById("display-card").innerHTML = data_story;
 }
 
 
@@ -270,6 +278,7 @@ window.onload = loadAbout;
 
 </body>
 </html>
+
 
 
 
